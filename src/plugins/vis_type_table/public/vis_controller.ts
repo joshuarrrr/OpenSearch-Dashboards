@@ -31,6 +31,7 @@
 import { CoreSetup, PluginInitializerContext } from 'opensearch-dashboards/public';
 import angular, { IModule, auto, IRootScopeService, IScope, ICompileService } from 'angular';
 import $ from 'jquery';
+import ReactDOM from 'react-dom';
 
 import { VisParams, ExprVis } from '../../visualizations/public';
 import { getAngularModule } from './get_inner_angular';
@@ -47,6 +48,7 @@ export function getTableVisualizationControllerClass(
     private tableVisModule: IModule | undefined;
     private injector: auto.IInjectorService | undefined;
     el: JQuery<Element>;
+    element: Element;
     vis: ExprVis;
     $rootScope: IRootScopeService | null = null;
     $scope: (IScope & { [key: string]: any }) | undefined;
@@ -54,6 +56,7 @@ export function getTableVisualizationControllerClass(
 
     constructor(domeElement: Element, vis: ExprVis) {
       this.el = $(domeElement);
+      this.element = domeElement;
       this.vis = vis;
     }
 
@@ -115,9 +118,12 @@ export function getTableVisualizationControllerClass(
           this.$scope = this.$rootScope.$new();
           this.$scope.uiState = this.vis.getUiState();
           updateScope();
-          this.el
-            .find('div')
-            .append(this.$compile(this.vis.type.visConfig?.template ?? '')(this.$scope));
+          const dataGrid = this.vis.type.visConfig?.template(this.$scope);
+          ReactDOM.render(dataGrid, this.element.querySelector('div') || this.element);
+          // this.el
+          //   .find('div')
+          //   // .append(this.$compile(this.vis.type.visConfig?.template ?? '')(this.$scope));
+          //   .append(tableEl);
           this.$scope.$apply();
         } else {
           updateScope();

@@ -39,6 +39,7 @@ import tableVisTemplate from './table_vis.html';
 import { TableOptions } from './components/table_vis_options_lazy';
 import { getTableVisualizationControllerClass } from './vis_controller';
 import { VIS_EVENT_TO_TRIGGER } from '../../visualizations/public';
+import { DataGrid } from './table_data_grid';
 
 export function getTableVisTypeDefinition(
   core: CoreSetup,
@@ -70,7 +71,8 @@ export function getTableVisTypeDefinition(
         totalFunc: 'sum',
         percentageCol: '',
       },
-      template: tableVisTemplate,
+      // template: tableVisTemplate,
+      template: DataGrid,
     },
     editorConfig: {
       optionsTemplate: TableOptions,
