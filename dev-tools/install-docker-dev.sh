@@ -14,9 +14,9 @@ osd_do_copy_dev_docker_files(){
 	local INSTALL_DIR
 	INSTALL_DIR="$(osd_docker_dev_install_dir)"
 	local ENTRYPOINT_SRC
-	ENTRYPOINT_SRC="https://raw.githubusercontent.com/joshuarrrr/OpenSearch-Dashboards/dev-test-docker-quickstart/docs/docker-dev/entrypoint.sh"
+	ENTRYPOINT_SRC="https://raw.githubusercontent.com/joshuarrrr/OpenSearch-Dashboards/dev-test-docker-quickstart/docs/docker-dev/entrypoint.sh" # update
 	local DOCKER_COMPOSE_SRC
-	DOCKER_COMPOSE_SRC="https://raw.githubusercontent.com/joshuarrrr/OpenSearch-Dashboards/dev-test-docker-quickstart/docs/docker-dev/docker-compose.yml"
+	DOCKER_COMPOSE_SRC="https://raw.githubusercontent.com/joshuarrrr/OpenSearch-Dashboards/dev-test-docker-quickstart/docs/docker-dev/docker-compose.yml" # update
 
 	mkdir -p "$INSTALL_DIR"
 	osd_download -s "$ENTRYPOINT_SRC" -o "./$INSTALL_DIR/entrypoint.sh"
