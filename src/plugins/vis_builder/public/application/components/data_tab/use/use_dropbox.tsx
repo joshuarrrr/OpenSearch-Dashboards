@@ -78,7 +78,7 @@ export const useDropbox = (props: UseDropboxProps): DropboxProps => {
     );
 
     aggConfig.brandNew = true;
-    const newAggs = [...aggs, aggConfig];
+    const newAggs = schema.mustBeFirst ? [aggConfig, ...aggs] : [...aggs, aggConfig];
     const newAggConfigs = aggService.createAggConfigs(indexPattern, cloneDeep(newAggs));
     const newAggConfig = newAggConfigs.aggs.find((agg) => agg.brandNew);
 
@@ -87,7 +87,7 @@ export const useDropbox = (props: UseDropboxProps): DropboxProps => {
     }
 
     dispatch(editDraftAgg(newAggConfig.serialize()));
-  }, [aggConfigs, aggService, aggs, dispatch, indexPattern, schema.name]);
+  }, [aggConfigs, aggService, aggs, dispatch, indexPattern, schema.mustBeFirst, schema.name]);
 
   const onEditField = useCallback(
     (aggId: string) => {
@@ -123,19 +123,24 @@ export const useDropbox = (props: UseDropboxProps): DropboxProps => {
         ? schemaAggTypes.filter((type: string) => validAggTypes.includes(type))
         : [];
 
-      aggConfigs?.createAggConfig({
-        type: allowedAggTypes[0] || validAggTypes[0],
-        schema: schema.name,
-        params: {
-          field: fieldName,
+      aggConfigs?.createAggConfig(
+        {
+          type: allowedAggTypes[0] || validAggTypes[0],
+          schema: schema.name,
+          params: {
+            field: fieldName,
+          },
         },
-      });
+        {
+          mustBeFirst: schema.mustBeFirst,
+        }
+      );
 
       if (aggConfigs) {
         dispatch(updateAggConfigParams(aggConfigs.aggs.map((agg) => agg.serialize())));
       }
     },
-    [aggConfigs, dispatch, schema.defaults, schema.name, validAggTypes]
+    [aggConfigs, dispatch, schema.defaults, schema.mustBeFirst, schema.name, validAggTypes]
   );
 
   const onReorderField = useCallback(
