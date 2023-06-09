@@ -14,7 +14,6 @@ Array [
     name="viewport"
   />,
   <title />,
-  null,
   <link
     href="[object Object]/ui/favicons/apple-touch-icon.png"
     rel="apple-touch-icon"
@@ -152,7 +151,6 @@ Array [
     name="viewport"
   />,
   <title />,
-  null,
   <link
     href="[object Object]/ui/favicons/apple-touch-icon.png"
     rel="apple-touch-icon"
@@ -290,7 +288,6 @@ Array [
     name="viewport"
   />,
   <title />,
-  null,
   <link
     href="[object Object]/ui/favicons/apple-touch-icon.png"
     rel="apple-touch-icon"
@@ -431,7 +428,6 @@ Array [
     name="viewport"
   />,
   <title />,
-  null,
   <link
     href="[object Object]/ui/favicons/apple-touch-icon.png"
     rel="apple-touch-icon"
@@ -572,7 +568,6 @@ Array [
     name="viewport"
   />,
   <title />,
-  null,
   <link
     href="[object Object]/ui/favicons/apple-touch-icon.png"
     rel="apple-touch-icon"
@@ -733,7 +728,6 @@ Array [
   <title>
     custom title
   </title>,
-  null,
   <link
     href="[object Object]/ui/favicons/apple-touch-icon.png"
     rel="apple-touch-icon"
@@ -873,7 +867,6 @@ Array [
   <title>
     custom title
   </title>,
-  null,
   <link
     href="[object Object]/ui/favicons/apple-touch-icon.png"
     rel="apple-touch-icon"
@@ -1016,7 +1009,6 @@ Array [
   <title>
     custom title
   </title>,
-  null,
   <link
     href="[object Object]/ui/favicons/apple-touch-icon.png"
     rel="apple-touch-icon"
@@ -1175,7 +1167,6 @@ Array [
     name="viewport"
   />,
   <title />,
-  null,
   <link
     href="/customFavicon"
     rel="apple-touch-icon"
@@ -1334,7 +1325,6 @@ Array [
     name="viewport"
   />,
   <title />,
-  null,
   <link
     href="[object Object]/ui/favicons/apple-touch-icon.png"
     rel="apple-touch-icon"

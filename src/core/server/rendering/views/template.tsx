@@ -31,7 +31,6 @@
 import React, { FunctionComponent, createElement } from 'react';
 
 import { RenderingMetadata } from '../types';
-import { Fonts } from './fonts';
 import { Styles } from './styles';
 
 interface Props {
@@ -174,7 +173,6 @@ export const Template: FunctionComponent<Props> = ({
         <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="viewport" content="width=device-width" />
         <title>{applicationTitle}</title>
-        <Fonts url={uiPublicUrl} />
         {/**
          * Favicons (generated from https://realfavicongenerator.net/)
          *
