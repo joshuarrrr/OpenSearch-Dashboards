@@ -43,6 +43,9 @@ export const Styles: FunctionComponent<Props> = ({ darkMode }) => {
     <style
       dangerouslySetInnerHTML={{
         __html: `
+          :root {
+            color-scheme: ${darkMode ? 'dark' : 'light'};
+          }
 
           *, *:before, *:after {
             box-sizing: border-box;
@@ -87,6 +90,10 @@ export const Styles: FunctionComponent<Props> = ({ darkMode }) => {
             -webkit-justify-content: center;
                 -ms-flex-pack: center;
                     justify-content: center;
+          }
+
+          .legacyBrowserErrorLogo {
+            height: 64px;
           }
 
           .osdWelcomeTitle {
@@ -158,8 +165,8 @@ export const Styles: FunctionComponent<Props> = ({ darkMode }) => {
           }
 
           .loadingLogoContainer {
-            height: 60px;
-            padding: 10px 10px 10px 10px;
+            height: 80px;
+            padding: 8px;
           }
 
           .loadingLogo {

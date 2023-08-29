@@ -27,6 +27,22 @@ module.exports = {
       {
         config: './../../../osd-stylelint-config/config/colors.json'
       },
-    ]
+    ],
+    '@osd/stylelint/no_restricted_properties': [
+      {
+        config: "./../../../osd-stylelint-config/config/restricted_properties.json"
+      },
+      {
+        severity: "error"
+      }
+    ],
+    '@osd/stylelint/no_restricted_values': [
+      {
+        config: "./../../../osd-stylelint-config/config/restricted_values.json"
+      },
+      {
+        severity: "error"
+      }
+    ],
   }
 }
