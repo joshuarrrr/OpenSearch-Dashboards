@@ -93,7 +93,7 @@ export class MappedColors {
       }
 
       // If this key is mapped to a color used by the config color mapping, we need to remap it
-      if (_.includes(configColors, this._mapping[key])) keysToMap.push(key);
+      // if (_.includes(configColors, this._mapping[key])) keysToMap.push(key);
 
       // if key exist in oldMap, move it to mapping
       if (this._oldMap[key]) {
@@ -105,14 +105,21 @@ export class MappedColors {
       if (this.get(key) == null) keysToMap.push(key);
     });
 
-    // Choose colors from euiPaletteColorBlind and filter out any already assigned to keys
-    const colorPalette = euiPaletteColorBlind({
-      rotations: Math.ceil(keys.length / 10),
-      direction: 'both',
-    })
-      .filter((color) => !alreadyUsedColors.includes(color.toLowerCase()))
-      .slice(0, keysToMap.length);
+    if (keysToMap.length) {
+      const rotationsNeeded = Math.ceil(keys.length / 10);
+      // Always use odd number of rotations so default colors are included
+      const rotations = rotationsNeeded % 2 === 0 ? rotationsNeeded : rotationsNeeded;
 
-    _.merge(this._mapping, _.zipObject(keysToMap, colorPalette));
+      // Choose colors from euiPaletteColorBlind and filter out any already assigned to keys
+      const colorPalette = euiPaletteColorBlind({
+        rotations,
+        direction: 'both',
+        order: 'group',
+      })
+        .filter((color) => !alreadyUsedColors.includes(color.toLowerCase()))
+        .slice(0, keysToMap.length);
+
+      _.merge(this._mapping, _.zipObject(keysToMap, colorPalette));
+    }
   }
 }
