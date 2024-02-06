@@ -53,7 +53,10 @@ export class MappedColors {
   }
 
   private getConfigColorMapping() {
-    return _.mapValues(this.uiSettings.get(COLOR_MAPPING_SETTING), standardizeColor);
+    return _.mapValues(
+      this.uiSettings.get(COLOR_MAPPING_SETTING) as Record<string | number, string> | undefined,
+      standardizeColor
+    );
   }
 
   public get oldMap(): any {
@@ -65,7 +68,7 @@ export class MappedColors {
   }
 
   get(key: string | number) {
-    return this.getConfigColorMapping()[key as any] || this._mapping[key];
+    return this.getConfigColorMapping()[key] || this._mapping[key];
   }
 
   flush() {
@@ -80,20 +83,15 @@ export class MappedColors {
 
   mapKeys(keys: Array<string | number>) {
     const configMapping = this.getConfigColorMapping();
-    const configColors = _.values(configMapping);
-    const oldColors = _.values(this._oldMap);
 
-    const alreadyUsedColors: string[] = [];
+    const alreadyUsedColors: string[] = _.values(this._mapping);
     const keysToMap: Array<string | number> = [];
+    debugger;
     _.each(keys, (key) => {
       // If this key is mapped in the config, it's unnecessary to have it mapped here
-      if (configMapping[key as any]) {
+      if (configMapping[key]) {
         delete this._mapping[key];
-        alreadyUsedColors.push(configMapping[key]);
       }
-
-      // If this key is mapped to a color used by the config color mapping, we need to remap it
-      if (_.includes(configColors, this._mapping[key])) keysToMap.push(key);
 
       // if key exist in oldMap, move it to mapping
       if (this._oldMap[key]) {
@@ -105,14 +103,58 @@ export class MappedColors {
       if (this.get(key) == null) keysToMap.push(key);
     });
 
-    // Choose colors from euiPaletteColorBlind and filter out any already assigned to keys
-    const colorPalette = euiPaletteColorBlind({
-      rotations: Math.ceil(keys.length / 10),
-      direction: 'both',
-    })
-      .filter((color) => !alreadyUsedColors.includes(color.toLowerCase()))
-      .slice(0, keysToMap.length);
+    const defaultPallette = euiPaletteColorBlind();
+    const mappedValuesSize = _.values(this._mapping).length;
+    if (keys.length <= defaultPallette.length) {
+      // Always preferentially use the pallette root colors, in order
+      const colorPalette = defaultPallette
+        .filter((color) => !alreadyUsedColors.includes(color.toLowerCase()))
+        .slice(0, keysToMap.length);
+      _.merge(this._mapping, _.zipObject(keysToMap, colorPalette));
+    } else if (keys.length <= 2 * defaultPallette.length) {
+      // If we only need 2 rotations, use root colors first, then assign lighter variations
+      // This ensures more saturation in the default case where series are ordered based on descending size
+      const colorPalette = euiPaletteColorBlind({
+        rotations: 2,
+      });
+      if (
+        mappedValuesSize <= defaultPallette.length ||
+        mappedValuesSize > 2 * defaultPallette.length
+      ) {
+        // Remap all colors if we change palette definition
+        this._mapping = _.zipObject(keys, colorPalette);
+      } else {
+        // Choose colors from euiPaletteColorBlind and filter out any already assigned to keys.
+        // Color palette order assignment matters, so we should always use a palette big enough for all keys.
+        const trimmedPalette = colorPalette
+          .filter((color) => !alreadyUsedColors.includes(color.toLowerCase()))
+          .slice(0, keysToMap.length);
 
-    _.merge(this._mapping, _.zipObject(keysToMap, colorPalette));
+        _.merge(this._mapping, _.zipObject(keysToMap, trimmedPalette));
+      }
+    } else {
+      // if we need 3 or more rotations, it looks much better to group similar colors together,
+      // even at the cost of less ability to distinguish
+      const colorPalette = euiPaletteColorBlind({
+        rotations: Math.ceil(keys.length / defaultPallette.length),
+        order: 'middle-out',
+        direction: 'both',
+      });
+      if (
+        Math.ceil(mappedValuesSize / defaultPallette.length) !==
+        Math.ceil(keys.length / defaultPallette.length)
+      ) {
+        // Remap all colors if we change palette definition
+        this._mapping = _.zipObject(keys, colorPalette);
+      } else {
+        // Choose colors from euiPaletteColorBlind and filter out any already assigned to keys.
+        // Color palette order assignment matters, so we should always use a palette big enough for all keys.
+        const trimmedPalette = colorPalette
+          .filter((color) => !alreadyUsedColors.includes(color.toLowerCase()))
+          .slice(0, keysToMap.length);
+
+        _.merge(this._mapping, _.zipObject(keysToMap, trimmedPalette));
+      }
+    }
   }
 }

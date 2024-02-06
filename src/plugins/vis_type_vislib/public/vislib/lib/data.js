@@ -73,7 +73,7 @@ export class Data {
     this.type = this.getDataType();
     this._cleanVisData();
     this.labels = this._getLabels(this.data);
-    this.color = this.labels
+    this.color = this.labels.length
       ? createColorLookupFunction(this.labels, uiState.get('vis.colors'))
       : undefined;
     this._normalizeOrdered();
