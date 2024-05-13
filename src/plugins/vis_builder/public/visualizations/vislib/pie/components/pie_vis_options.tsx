@@ -14,7 +14,7 @@ import {
 import { SwitchOption } from '../../../../../../charts/public';
 import { PieOptionsDefaults } from '../pie_vis_type';
 import { Option } from '../../../../application/app';
-import { BasicVisOptions } from '../../common/basic_vis_options';
+import { BasicVisOptions, RenderOption } from '../../common/basic_vis_options';
 
 function PieVisOptions() {
   const styleState = useTypedSelector((state) => state.style) as PieOptionsDefaults;
@@ -49,6 +49,7 @@ function PieVisOptions() {
           }
         />
         <BasicVisOptions styleState={styleState} setOption={setOption} />
+        <RenderOption styleState={styleState} setOption={setOption} />
       </Option>
     </>
   );

@@ -9,6 +9,7 @@ import { PieOptionsDefaults } from './pie_vis_type';
 import { getAggExpressionFunctions } from '../../common/expression_helpers';
 import { VislibRootState } from '../common';
 import { AggConfigs, IAggConfig } from '../../../../../data/public';
+import { VegaExpressionFunctionDefinition } from '../../../../../vis_type_vega/public';
 
 // TODO: Update to the common getShemas from src/plugins/visualizations/public/legacy/build_pipeline.ts
 // And move to a common location accessible by all the visualizations
@@ -96,7 +97,14 @@ export const toExpression = async ({
   visualization,
 }: VislibRootState<PieOptionsDefaults>) => {
   const { aggConfigs, expressionFns } = await getAggExpressionFunctions(visualization, styleState);
-  const { addLegend, addTooltip, showMetricsAtAllLevels, isDonut, legendPosition } = styleState;
+  const {
+    addLegend,
+    addTooltip,
+    showMetricsAtAllLevels,
+    isDonut,
+    legendPosition,
+    useVegaLiteRendering,
+  } = styleState;
 
   const schemas = getVisSchemas(aggConfigs, showMetricsAtAllLevels);
 
@@ -116,9 +124,23 @@ export const toExpression = async ({
     showMetricsAtAllLevels,
   };
 
-  const vislib = buildExpressionFunction<any>('opensearch_dashboards_pie', {
-    visConfig: JSON.stringify(visConfig),
-  });
+  if (useVegaLiteRendering) {
+    const vegaSpecFn = buildExpressionFunction<any>('pie_vega_spec', {
+      // visConfig: JSON.stringify(visConfig),
+    });
 
-  return buildExpression([...expressionFns, vislib]).toString();
+    const vegaSpecFnExpressionBuilder = buildExpression([vegaSpecFn]);
+
+    const vegaFn = buildExpressionFunction<VegaExpressionFunctionDefinition>('vega', {
+      spec: vegaSpecFnExpressionBuilder,
+    });
+
+    return buildExpression([...expressionFns, vegaFn]).toString();
+  } else {
+    const vislib = buildExpressionFunction<any>('opensearch_dashboards_pie', {
+      visConfig: JSON.stringify(visConfig),
+    });
+
+    return buildExpression([...expressionFns, vislib]).toString();
+  }
 };

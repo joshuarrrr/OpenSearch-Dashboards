@@ -78,6 +78,7 @@ export const createHistogramConfig = (): VisualizationTypeOptions<HistogramOptio
           addLegend: true,
           legendPosition: Positions.RIGHT,
           type: 'histogram',
+          useVegaLiteRendering: false,
         },
         render: HistogramVisOptions,
       },

@@ -56,6 +56,7 @@ import { getVegaInspectorView } from './vega_inspector';
 import { createLineVegaSpecFn } from './expressions/line_vega_spec_fn';
 import { UiActionsStart } from '../../ui_actions/public';
 import { setUiActions } from './services';
+import { createPieVegaSpecFn } from './expressions/pie_vega_spec_fn';
 
 /** @internal */
 export interface VegaVisualizationDependencies {
@@ -121,6 +122,7 @@ export class VegaPlugin implements Plugin<Promise<void>, void> {
 
     expressions.registerFunction(() => createVegaFn(visualizationDependencies));
     expressions.registerFunction(() => createLineVegaSpecFn(visualizationDependencies));
+    expressions.registerFunction(() => createPieVegaSpecFn(visualizationDependencies));
 
     visualizations.createBaseVisualization(createVegaTypeDefinition(visualizationDependencies));
   }

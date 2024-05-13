@@ -47,3 +47,20 @@ export const BasicVisOptions = ({ styleState, setOption }: Props) => {
     </>
   );
 };
+
+export const RenderOption = ({ styleState, setOption }: Props) => {
+  return (
+    <SwitchOption
+      label={i18n.translate('charts.controls.vislibBasicOptions.legendPositionLabel', {
+        defaultMessage: 'Render with Vega Lite',
+      })}
+      paramName="renderVegaLite"
+      value={styleState.useVegaLiteRendering}
+      setValue={(_, value) =>
+        setOption((draft) => {
+          draft.useVegaLiteRendering = value;
+        })
+      }
+    />
+  );
+};

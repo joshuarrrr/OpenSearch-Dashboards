@@ -89,6 +89,7 @@ export const createLineConfig = (): VisualizationTypeOptions<LineOptionsDefaults
           addLegend: true,
           legendPosition: Positions.RIGHT,
           type: 'line',
+          useVegaLiteRendering: false,
         },
         render: LineVisOptions,
       },

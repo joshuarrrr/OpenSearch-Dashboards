@@ -103,6 +103,7 @@ export const createPieVisTypeDefinition = (deps: VisTypeVislibDependencies) => (
         min: 0,
         max: Infinity,
         aggFilter: ['!geohash_grid', '!geotile_grid', '!filter'],
+        // defaults: { aggTypes: ['terms'] },
       },
       {
         group: AggGroupNames.Buckets,

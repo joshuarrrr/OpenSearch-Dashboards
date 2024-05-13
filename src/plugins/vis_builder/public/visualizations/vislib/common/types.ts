@@ -11,6 +11,7 @@ export interface BasicOptionsDefaults {
   addLegend: boolean;
   legendPosition: Positions;
   type: string;
+  useVegaLiteRendering: boolean;
 }
 
 export interface VislibRootState<T extends BasicOptionsDefaults> extends RenderState {

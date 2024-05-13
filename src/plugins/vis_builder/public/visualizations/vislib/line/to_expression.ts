@@ -21,7 +21,7 @@ export const toExpression = async (
   const { aggConfigs, expressionFns, indexPattern } = await getAggExpressionFunctions(
     visualization
   );
-  const { addLegend, addTooltip, legendPosition, type } = styleState;
+  const { addLegend, addTooltip, legendPosition, type, useVegaLiteRendering } = styleState;
 
   const vis = await createVis(type, aggConfigs, indexPattern, searchContext?.timeRange);
 
@@ -39,6 +39,7 @@ export const toExpression = async (
     valueAxes,
   };
 
+  debugger;
   const vislib = buildExpressionFunction<any>('vislib', {
     type,
     visConfig: JSON.stringify(visConfig),

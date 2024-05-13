@@ -78,6 +78,7 @@ export const createAreaConfig = (): VisualizationTypeOptions<AreaOptionsDefaults
           addLegend: true,
           legendPosition: Positions.RIGHT,
           type: 'area',
+          useVegaLiteRendering: false,
         },
         render: AreaVisOptions,
       },
